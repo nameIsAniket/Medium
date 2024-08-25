@@ -12,7 +12,7 @@ const userRouter = new Hono<{
     Bindings : Bindings;
 }>();
 
-userRouter.post('/api/v1/user/signup',async (c) => {
+userRouter.post('/signup',async (c) => {
 	// creating prisma client 
 	const prisma = new PrismaClient({
 		datasourceUrl: c.env.DATABASE_URL,
@@ -31,23 +31,31 @@ userRouter.post('/api/v1/user/signup',async (c) => {
 		return c.json({error: `${body.email} is already present`});
 	}
 
-	const user = await prisma.user.create({
-		data: {
-			email : body.email,
-			name: body.name,
-			password : body.password,
-		}
-	})
-
-	const token = await sign({is : user.id}, c.env.JWT_SECRETE);
-
-	return c.json({
-		message : `${body.email} Signup Sucessfully`,
-		jwtToken : token
-	})
+	try{
+		const user = await prisma.user.create({
+			data: {
+				email : body.email,
+				name: body.name,
+				password : body.password,
+			}
+		})
+	
+		const token = await sign({is : user.id}, c.env.JWT_SECRETE);
+	
+		return c.json({
+			message : `${body.email} Signup Sucessfully`,
+			jwtToken : token
+		})
+	}
+	catch(e){
+		console.log("_______________________")
+		console.log(e);
+		c.status(411);
+		return c.text('Error occured while signup');
+	}
 })
 
-userRouter.post('/api/v1/user/signin', async (c) => {
+userRouter.post('/signin', async (c) => {
 
 	const prisma = new PrismaClient({
 		datasourceUrl: c.env.DATABASE_URL,
@@ -55,7 +63,7 @@ userRouter.post('/api/v1/user/signin', async (c) => {
 
 	const body = await c.req.json();
 
-	const token = body.id.header("Authorization");
+	const token = c.req.header("Authorization") || " ";
 	
 	const authCheck = await verify(token, c.env.JWT_SECRETE);
 	if (!authCheck.id){
