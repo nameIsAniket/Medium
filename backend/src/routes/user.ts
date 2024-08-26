@@ -50,7 +50,7 @@ userRouter.post('/signup',async (c) => {
 			}
 		})
 	
-		const token = await sign({is : user.id}, c.env.JWT_SECRETE);
+		const token = await sign({id : user.id}, c.env.JWT_SECRETE);
 	
 		return c.json({
 			message : `${body.username} Signup Sucessfully`,
@@ -82,28 +82,27 @@ userRouter.post('/signin', async (c) => {
 		})
 	}
 
-
-	const token = c.req.header("Authorization") || " ";
+	try{
+		const user = await prisma.user.findUnique({
+			where : {
+				username : body.username,
+				password : body.password
+			}
+		})
 	
-	const authCheck = await verify(token, c.env.JWT_SECRETE);
-	if (!authCheck.id){
-		c.status(403)
-		return c.text("Unauthorised session");
-	}
-
-	const user = await prisma.user.findUnique({
-		where : {
-			username : body.username,
-			password : body.password
+		if(!user){
+			c.status(403);
+			return c.text("User not found")
 		}
-	})
-
-	if(!user){
-		c.status(403);
-		return c.text("User not found")
+		const jwt = await sign({id: user.id}, c.env.JWT_SECRETE);
+		return c.text(jwt);
 	}
-	const jwt = await sign({id: user.id}, c.env.JWT_SECRETE);
-	return c.json({jwt});
+	catch(e){
+		console.log(e);
+		c.status(411);
+		return c.text('Error while Signing in')
+	}
+
 })
 
 export {userRouter};
