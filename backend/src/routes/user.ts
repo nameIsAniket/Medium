@@ -32,19 +32,19 @@ userRouter.post('/signup',async (c) => {
 
 	const presentUser = await prisma.user.findUnique({
 		where: {
-			email: body.email
+			username: body.username
 		}
 	})
 
 	if (presentUser){
 		c.status(403);
-		return c.json({error: `${body.email} is already present`});
+		return c.json({error: `${body.username} is already present`});
 	}
 
 	try{
 		const user = await prisma.user.create({
 			data: {
-				email : body.email,
+				username : body.username,
 				name: body.name,
 				password : body.password,
 			}
@@ -53,7 +53,7 @@ userRouter.post('/signup',async (c) => {
 		const token = await sign({is : user.id}, c.env.JWT_SECRETE);
 	
 		return c.json({
-			message : `${body.email} Signup Sucessfully`,
+			message : `${body.username} Signup Sucessfully`,
 			jwtToken : token
 		})
 	}
@@ -93,7 +93,7 @@ userRouter.post('/signin', async (c) => {
 
 	const user = await prisma.user.findUnique({
 		where : {
-			email : body.email,
+			username : body.username,
 			password : body.password
 		}
 	})
