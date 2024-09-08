@@ -22,10 +22,12 @@ userRouter.post('/signup',async (c) => {
 	const body = await c.req.json();
 
 	const { success } = signupInput.safeParse(body);
+	const error = signupInput.safeParse(body);
 
 	if (!success){
 		c.status(411);
 		return c.json({
+			error,
 			message : "Invalid inputs"
 		})
 	}

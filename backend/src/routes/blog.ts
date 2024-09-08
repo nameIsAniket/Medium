@@ -105,7 +105,7 @@ blogRouter.get('/bulk',async (c) => {
     }).$extends(withAccelerate())
 
     try{
-        const blogs = prisma.post.findMany({
+        const blogs = await prisma.post.findMany({
             select : {
                 content : true,
                 title : true,
@@ -165,8 +165,6 @@ blogRouter.get('/:id',async (c) => {
             error : error
         })
     }
-
-   
 })
 
 
