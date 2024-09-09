@@ -12,21 +12,21 @@ export const Blogs = () => {
         </div>
     }
     
-
     return <div>
         <div>
             <Appbar/>
         </div>
-        <div className='flex justify-center '>
-            <div className='max-w-6xl '>
-                {blogs.map(blog => 
-                    <BlogCard
-                    authorName = {blog.author.name || "Anonymous"}
-                    publishDate = {'10-Jan-2000'}
-                    title = {blog.title}
-                    content = {blog.content}
-                ></BlogCard>
-                )}
+        <div className='flex justify-center'>
+            <div>
+            {blogs.map(blog => 
+            <BlogCard
+                authorName = {blog.author.name || "Anonymous"}
+                publishDate = {'10-Jan-2000'}
+                title = {blog.title}
+                content = {blog.content}
+                id = {blog.id}
+            ></BlogCard>
+            )}
             </div>
         </div>
     </div>

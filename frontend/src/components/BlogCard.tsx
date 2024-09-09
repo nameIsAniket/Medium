@@ -1,36 +1,41 @@
+import { Link } from "react-router-dom"
+
 interface BlogcardInput {
     authorName : string,
     publishDate : string,
     title : string,
-    content : string
+    content : string,
+    id : string
 }
 
-export const BlogCard = ({authorName,publishDate,title,content}:BlogcardInput) => {
-    return <div className="border-b-2 border-slate-200 pb-3 pt-2">
-        <div className="flex pt-2" >
-            <div className="flex justify-center">
-                <Avatar name = {authorName}/>
+export const BlogCard = ({authorName,publishDate,title,content,id}:BlogcardInput) => {
+    return <Link to={`/blog/${id}`}>
+        <div className="border-b-2 border-slate-200 pb-3 pt-2 w-screen max-w-lg">
+            <div className="flex pt-2" >
+                <div className="flex justify-center">
+                    <Avatar name = {authorName}/>
+                </div>
+                <div className="flex justify-center font-normal pl-2 text-sm text-slate-700">
+                    {authorName}
+                </div>
+                <div className="flex justify-center flex-col pl-2">
+                    <Circle/>
+                </div>
+                <div className="pl-2 font-normal flex justify-center text-slate-400 text-sm">
+                    {publishDate}
+                </div>
             </div>
-            <div className="flex justify-center font-normal pl-2 text-sm text-slate-700">
-                {authorName}
+            <div className="text-xl font-semibold pt-3">
+                {title}
             </div>
-            <div className="flex justify-center flex-col pl-2">
-                <Circle/>
+            <div className="text-md font-normal text-slate-500 ">
+                {content.slice(0,100) + "..."} 
             </div>
-            <div className="pl-2 font-normal flex justify-center text-slate-400 text-sm">
-                {publishDate}
+            <div className="text-slate-400 text-sm pt-3">
+                {`${Math.ceil(content.length / 100)} minutes read`} 
             </div>
         </div>
-        <div className="text-xl font-semibold pt-3">
-            {title}
-        </div>
-        <div className="text-md font-normal text-slate-500 ">
-            {content.slice(0,100) + "..."} 
-        </div>
-        <div className="text-slate-400 text-sm pt-3">
-            {`${Math.ceil(content.length / 100)} minutes read`} 
-        </div>
-    </div>
+    </Link>
 }
 
 export function Circle() {
