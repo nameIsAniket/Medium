@@ -15,6 +15,6 @@ export const Blog = () => {
     }
 
     return <div>
-        <FullBlog blog = {blog}/>
+        {blog ? <FullBlog blog = {blog}/> : <div> ...Loading </div>}
     </div>
 }
