@@ -31,7 +31,7 @@ export const FullBlog = ({ blog }: {blog: Blog}) => {
                                 {blog.author.name || "Anonymous"}
                             </div>
                             <div className="pt-2 text-slate-500">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim maxime, accusantium ut qui eaque ducimus distinctio cumque dolore labore praesentium beatae? Est, earum. Odio iusto corporis, suscipit nemo asperiores blanditiis.
+                                If u dont have to do, work it on yourself
                             </div>
                         </div>
                     </div>  
